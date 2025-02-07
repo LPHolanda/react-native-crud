@@ -2,10 +2,10 @@ import { Avatar, Button, Icon, ListItem } from '@rneui/themed';
 import { StyleSheet, View, Text, FlatList, Alert } from 'react-native';
 import { users } from '../data/users';
 import { User } from '../models/User';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 export default function UserList() {
-    const navigation = useNavigation();
+    const router = useRouter();
 
     function confirmUserDeletion(user: User) {
         Alert.alert('Excluir usuário', 'Deseja excluir o usuário?', [
@@ -25,7 +25,7 @@ export default function UserList() {
         return (
             <>
                 <Button
-                    onPress={() => navigation.navigate('userForm' as never, user as never)}
+                    onPress={() => router.navigate({ pathname: '/userForm', params: user })}
                     type="clear"
                     icon={<Icon name="edit" size={25} color="orange" />}
                 />
@@ -43,7 +43,7 @@ export default function UserList() {
             <ListItem
                 key={user.id}
                 bottomDivider
-                onPress={() => navigation.navigate('userForm' as never, user as never)} //as never é pra suprimir um erro do react navigation com typescript
+                onPress={() => router.navigate({ pathname: '/userForm', params: user })}
             >
                 <Avatar 
                     rounded

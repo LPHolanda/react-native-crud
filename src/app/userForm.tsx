@@ -1,18 +1,13 @@
 import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import { User } from '../models/User';
-import { useNavigation } from '@react-navigation/native';
+import { useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 
-type Props = {
-    // navigation: any,
-    // route: any,
-    user: User
-}
-
-export default function UserForm(props: Props) {
-    console.log('props.user', props.user)
-    const navigation = useNavigation();
-    const [user, setUser] = useState<User>();
+export default function UserForm() {
+    const router = useRouter();
+    const localParams = useLocalSearchParams<{ id: string, name: string, email: string, avatarUrl: string }>();
+    const [user, setUser] = useState<User>({ ...localParams, id: +localParams.id }); //casting do id de string para number
 
     return (
         <View style={styles.form}>
@@ -40,7 +35,7 @@ export default function UserForm(props: Props) {
             <Button
                 title="Salvar"
                 onPress={() => {
-                    navigation.goBack();
+                    router.back();
                 }}
             />
         </View>
