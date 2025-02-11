@@ -3,16 +3,22 @@ import { StyleSheet, View, Text, FlatList, Alert } from 'react-native';
 import { users } from '../data/users';
 import { User } from '../models/User';
 import { useRouter } from 'expo-router';
+import { useContext } from 'react';
+import UsersContext from '../context/UsersContext';
 
 export default function UserList() {
     const router = useRouter();
+    const ctx = useContext(UsersContext); // destructuring só pode ser feito em objetos que não podem ser nulos
 
     function confirmUserDeletion(user: User) {
         Alert.alert('Excluir usuário', 'Deseja excluir o usuário?', [
             {
                 text: 'Sim',
                 onPress() {
-                    console.warn('delete', user.id)
+                    ctx?.dispatch({
+                        type: 'deleteUser',
+                        payload: user
+                    })
                 }
             },
             {
@@ -62,7 +68,7 @@ export default function UserList() {
         <View>
             <FlatList 
                 keyExtractor={user => user.id.toString()}
-                data={users}
+                data={ctx?.state.users}
                 renderItem={(user) => getUserItem(user.item)}
             />
         </View>

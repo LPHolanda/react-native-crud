@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import { User } from '../models/User';
 import { useLocalSearchParams } from 'expo-router';
 import { useRouter } from 'expo-router';
+import UsersContext from '../context/UsersContext';
 
 export default function UserForm() {
     const router = useRouter();
+    const ctx = useContext(UsersContext);
     const localParams = useLocalSearchParams<{ id: string, name: string, email: string, avatarUrl: string }>();
     const [user, setUser] = useState<User>({ ...localParams, id: +localParams.id }); //casting do id de string para number
 
@@ -35,6 +37,10 @@ export default function UserForm() {
             <Button
                 title="Salvar"
                 onPress={() => {
+                    ctx?.dispatch({
+                        type: user.id ? 'updateUser' : 'createUser',
+                        payload: user,
+                    })
                     router.back();
                 }}
             />

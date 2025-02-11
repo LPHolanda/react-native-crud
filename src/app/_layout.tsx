@@ -1,10 +1,11 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Button, Icon } from '@rneui/themed';
+import { UsersProvider } from "../context/UsersContext";
 
 export default function RootLayout() {
     return (
-        <>
+        <UsersProvider>
             <Stack
                 initialRouteName='index'
                 screenOptions={screenOptions}>
@@ -34,7 +35,7 @@ export default function RootLayout() {
                 />
             </Stack>
             <StatusBar style="dark" />
-        </>
+        </UsersProvider>
     )
 }
 
